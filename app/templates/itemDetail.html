@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+<h1>{{item.name}} Detail</h1>
+<p>Description: {{ item.description }}</p>
+<br>
+<a href="{{ url_for('editItem', category_name=category.name, item_name=item.name) }}" class="btn btn-primary">Edit</a> 
+<a href="{{ url_for('deleteItem', category_name=category.name, item_name=item.name) }}" class="btn btn-danger">Delete</a> 
+{% endblock %}

@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+<h2 align="left">Are you sure you want to delete {{item.name}} from {{category.name}}?</h2>
+<form method="post">
+	<button type="submit" class="btn btn-danger">Delete</button> 
+	<a href="{{ url_for('showItem', category_name=category.name, item_name=item.name) }}" class="btn btn-primary">Cancel</a>
+</form>
+{% endblock %}

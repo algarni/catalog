@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+<h1>{{category.name}} Items</h1>
+<ul>
+	{% for item in items %}
+		<li><a href="{{ url_for('showItem', category_name=item.category.name, item_name=item.name) }}">{{ item.name }}</a></li>
+	{% endfor %}
+</ul>
+<br>
+<a href="{{ url_for('newItem', category_name=category.name) }}" class="btn btn-default">New Item</a>
+{% endblock %}
