@@ -8,5 +8,6 @@
 	{% endfor %}
 </ul>
 <br>
-<a href="{{ url_for('newItem', category_name=category.name) }}" class="btn btn-default">New Item</a>
+<a href="{{ url_for('newItem', category_name=category.name) }}" class="btn btn-primary">New Item</a>
+<a href="{{ url_for('showItemsJSON', category_name=category.name) }}" class="btn btn-info">View JSON</a>
 {% endblock %}
