@@ -1,14 +1,35 @@
+#!/usr/bin/env python3
+
 from app import db
+from flask_dance.consumer.backend.sqla import OAuthConsumerMixin
+from flask_login import UserMixin
 
 
-
-class User(db.Model):
+class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(120), unique=True)
+    name = db.Column(db.String(256))
+    username = db.Column(db.String(256), unique=True)
     items = db.relationship('Item', backref='user', lazy='dynamic')
 
     def __repr__(self):
         return '<User {}>'.format(self.email)
+
+    @property
+    def serialize(self):
+        """Return object data in easily serializeable format"""
+        return {
+            'username': self.username,
+            'name': self.name,
+            'email': self.email,
+            'id': self.id,
+        }
+
+
+class OAuth(OAuthConsumerMixin, db.Model):
+    provider_user_id = db.Column(db.String(265), unique=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user = db.relationship('User')
 
 
 class Category(db.Model):
@@ -19,22 +40,40 @@ class Category(db.Model):
     def __repr__(self):
         return '<Category {}>'.format(self.name)
 
+    @property
+    def serialize(self):
+        """Return object data in easily serializeable format"""
+        return {
+            'name': self.name,
+            'id': self.id,
+        }
+
 
 class Item(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
     description = db.Column(db.Text)
-    category_id = db.Column(db.Integer, db.ForeignKey('category.id'))
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    category_id = db.Column(db.Integer, db.ForeignKey(
+        'category.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
     def __repr__(self):
         return '<Item {}>'.format(self.name)
 
+    @property
+    def serialize(self):
+        """Return object data in easily serializeable format"""
+        return {
+            'name': self.name,
+            'description': self.description,
+            'id': self.id,
+        }
+
 
 db.event.listen(User.__table__, 'after_create',
                 db.DDL("""
-                    INSERT INTO user (id, email) 
-                    VALUES (1, 'm.t.algarni@gmail.com')
+                    INSERT INTO user (id, email, name, username) 
+                    VALUES (1, 'm.t.algarni@gmail.com', 'Mohammad Algarni', 'admin')
                 """))
 
 db.event.listen(Category.__table__, 'after_create',
@@ -49,7 +88,6 @@ db.event.listen(Category.__table__, 'after_create',
                     (7, 'Network components'), 
                     (8, 'Software')
                 """))
-
 
 
 db.event.listen(Item.__table__, 'after_create',
