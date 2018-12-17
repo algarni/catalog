@@ -27,6 +27,10 @@ $ export OAUTHLIB_INSECURE_TRANSPORT=1
 $ export OAUTHLIB_RELAX_TOKEN_SCOPE=1
 ~~~~
 
+# Seeder file
+
+Some example data will be seeded to the database automatically when you run the applicaton first time
+
 # Usage
 ~~~~
 $ export OAUTHLIB_INSECURE_TRANSPORT=1
