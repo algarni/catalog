@@ -35,6 +35,41 @@ $ cd catalog/
 $ python3 applicaton.py
 ~~~~
 
+# Project Structure
+
+```
+catalog/
+├── app
+│   ├── __init__.py
+│   ├── models.py
+│   ├── routes.py
+│   └── templates
+│       ├── 403.html
+│       ├── base.html
+│       ├── categories.html
+│       ├── deleteCategory.html
+│       ├── deleteItem.html
+│       ├── editCategory.html
+│       ├── editItem.html
+│       ├── index.html
+│       ├── itemDetail.html
+│       ├── items.html
+│       ├── newCategory.html
+│       └── newItem.html
+├── app.db
+├── application.py
+├── config.py
+├── LICENSE
+├── README.md
+└── requirements.txt
+```
+
+# References
+
+* [The Flask Mega-Tutorial](https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-i-hello-world)
+* [Flask-Dance - SQLAlchemy Multi-User Quickstart](https://github.com/singingwolfboy/flask-dance/blob/master/docs/quickstarts/sqla-multiuser.rst#id1)
+* [IT Asset Classification Guidance - ADOA-ASET](https://aset.az.gov/sites/default/files/media/IT%20Asset%20Classification%20Guidance%202015-06-01_0_1.docx)
+
 # License
 MIT
 
