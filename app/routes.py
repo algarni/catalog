@@ -41,7 +41,7 @@ def google_logged_in(blueprint, token):
     response = blueprint.session.get('/oauth2/v2/userinfo')
 
     if not response.ok:
-        message = 'Fetching user informaton has been failed from GitHub.'
+        message = 'Fetching user informaton has been failed from Google.'
         flash(message, category='error')
         return False
 
@@ -63,7 +63,7 @@ def google_logged_in(blueprint, token):
         )
     if oauth.user:
         login_user(oauth.user)
-        flash('You have signed in seccessfully with GitHub.')
+        flash('You have signed in seccessfully with Google.')
 
     else:
         # Check if the user exist in the database
@@ -86,7 +86,7 @@ def google_logged_in(blueprint, token):
 
         # Log in the new user using his local account
         login_user(user)
-        flash('You have successfully signed in with GitHub.')
+        flash('You have successfully signed in with Google.')
 
     return False
 
@@ -129,16 +129,19 @@ def showCategoriesJSON():
 
 @app.route('/catalog/category/new')
 def newCategory():
+    # TODO
     return render_template('newCategory.html')
 
 
 @app.route('/catalog/<category_name>/edit')
 def editCategory(category_name):
+    # TODO
     return render_template('editCategory.html', category=category)
 
 
 @app.route('/catalog/<category_name>/delete')
 def deleteCategory(category_name):
+    # TODO
     return render_template('deleteCategory.html', category=category)
 
 
