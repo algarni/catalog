@@ -70,32 +70,53 @@ class Item(db.Model):
         }
 
 
-db.event.listen(User.__table__, 'after_create',
-                db.DDL("""
-                    INSERT INTO "user" (id, email, name, username) 
-                    VALUES (1, 'm.t.algarni@gmail.com', 'Mohammad Algarni', 'admin')
-                """))
+# db.event.listen(User.__table__, 'after_create',
+#                 db.DDL("""
+#                     INSERT INTO "user" (id, email, name, username) 
+#                     VALUES (1, 'm.t.algarni@gmail.com', 'Mohammad Algarni', 'admin')
+#                 """))
 
-db.event.listen(Category.__table__, 'after_create',
-                db.DDL("""
-                    INSERT INTO category (id, name) 
-                    VALUES (1, 'Computers'), 
-                    (2, 'Computer peripherals'), 
-                    (3, 'Data storage'),
-                    (4, 'Printers'),
-                    (5, 'Data center devices'),
-                    (6, 'Desktop devices'),
-                    (7, 'Network components'), 
-                    (8, 'Software')
-                """))
+def insert_user_initial_values(*args, **kwargs):
+    db.session.add(User(email='m.t.algarni@gmail.com', name='Mohammad Algarni', username='admin'))
+    db.session.commit()
+
+db.event.listen(User.__table__, 'after_create', insert_user_initial_values)
+
+# db.event.listen(Category.__table__, 'after_create',
+#                 db.DDL("""
+#                     INSERT INTO category (id, name) 
+#                     VALUES (1, 'Computers'), 
+#                     (2, 'Computer peripherals'), 
+#                     (3, 'Data storage'),
+#                     (4, 'Printers'),
+#                     (5, 'Data center devices'),
+#                     (6, 'Desktop devices'),
+#                     (7, 'Network components'), 
+#                     (8, 'Software')
+#                 """))
+
+def insert_category_initial_values(*args, **kwargs):
+    user = db.session.query(User).filter_by(email='m.t.algarni@gmail.com').one()
+    db.session.add(Category(name='Computer'))
+    db.session.commit()
+
+db.event.listen(Category.__table__, 'after_create', insert_category_initial_values)
 
 
-db.event.listen(Item.__table__, 'after_create',
-                db.DDL("""
-                    INSERT INTO item (id, name, description, category_id, user_id) 
-                    VALUES (1, 'Mainframe', 'Mainframe computers are computers used primarily by large organizations for critical applications; bulk data processing, such as census, industry and consumer statistics, enterprise resource planning; and transaction processing.', 1, 1), 
-                    (2, 'Servers', 'A server is a computer that serves data or prov"id"es access to an application (such as a database, e-mail) to more than one person.', 1, 1), 
-                    (3, 'Desktop computer', 'Desktop computers are typically dedicated to only one person at a desk or work station.', 1, 1),
-                    (4, 'Laptop', 'i.  A laptop is a computer, screen, storage and keyboard all in one unit. It can be removed from the workstation and carried around.', 1, 1),
-                    (5, 'Tablet and other mobile devices', 'A tablet is a computer with the screen, processor and storage in a single unit. A smartphones are classified as cellular phones.', 1, 1)
-                """))
+# db.event.listen(Item.__table__, 'after_create',
+#                 db.DDL("""
+#                     INSERT INTO item (id, name, description, category_id, user_id) 
+#                     VALUES (1, 'Mainframe', 'Mainframe computers are computers used primarily by large organizations for critical applications; bulk data processing, such as census, industry and consumer statistics, enterprise resource planning; and transaction processing.', 1, 1), 
+#                     (2, 'Servers', 'A server is a computer that serves data or prov"id"es access to an application (such as a database, e-mail) to more than one person.', 1, 1), 
+#                     (3, 'Desktop computer', 'Desktop computers are typically dedicated to only one person at a desk or work station.', 1, 1),
+#                     (4, 'Laptop', 'i.  A laptop is a computer, screen, storage and keyboard all in one unit. It can be removed from the workstation and carried around.', 1, 1),
+#                     (5, 'Tablet and other mobile devices', 'A tablet is a computer with the screen, processor and storage in a single unit. A smartphones are classified as cellular phones.', 1, 1)
+#                 """))
+
+def insert_item_initial_values(*args, **kwargs):
+    user = db.session.query(User).filter_by(email='m.t.algarni@gmail.com').one()
+    category = db.session.query(Category).filter_by(name='Computer').one()
+    db.session.add(Item(name='Mainframe', description='Mainframe computers are computers used primarily by large organizations for critical applications; bulk data processing, such as census, industry and consumer statistics, enterprise resource planning; and transaction processing.', category_id=category.id, user_id=user.id))
+    db.session.commit()
+
+db.event.listen(Item.__table__, 'after_create', insert_item_initial_values)
