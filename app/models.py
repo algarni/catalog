@@ -72,7 +72,7 @@ class Item(db.Model):
 
 db.event.listen(User.__table__, 'after_create',
                 db.DDL("""
-                    INSERT INTO user (id, email, name, username) 
+                    INSERT INTO "user" (id, email, name, username) 
                     VALUES (1, 'm.t.algarni@gmail.com', 'Mohammad Algarni', 'admin')
                 """))
 
